@@ -25,6 +25,26 @@ const getHouseMap = computed(() => {
   return map
 })
 
+const getUnitMap = computed(() => {
+  const map = new Map()
+  for (const meal of storeMeals.meals){
+    const temp = {                
+      unit: meal.unit,         
+      unitCount: meal.unitCount,
+      special: meal.special,
+      lastName: meal.lastName,
+      firstName: meal.firstName,
+    }
+    if (!map.has(meal.unit)){
+        map.set(meal.unit,[])
+    }
+    let arr = map.get(meal.unit)
+    arr.push(temp)
+    map.set(meal.unit,arr)
+  }
+  return map
+})
+
 const getSpecialMap = computed(() => {
   const map = new Map()
   for (const meal of storeMeals.sortBySpecial){
@@ -49,20 +69,14 @@ const getSpecialMap = computed(() => {
   <div class="home">
     <text-reader></text-reader>
 
-   
-    <div v-for="special in getSpecialMap.keys()" :key="special">
-        <h3>
-              {{special}}: {{ getSpecialMap.get(special).length }}
-        </h3>
-        <table>
-          <tr v-for="meal in getSpecialMap.get(special)" :key="special" class="specialline">
-            <td> {{meal.unit}} </td>
-            <td> {{meal.special}} </td>
-          </tr>
-        </table>
+    <h3>J: {{  }}</h3>
+    <div v-for="meal in getUnitMap.get('J')" :key="meal">
+      {{ meal.special }}: {{meal.lastName}}, {{meal.firstName}}
     </div>
 
-    <br/><br/>
+
+
+<!--  
     
     <div v-for="house in getHouseMap.keys()" :key="house">
         <h3>
@@ -78,7 +92,21 @@ const getSpecialMap = computed(() => {
         <br/><br/>
     </div>
 
-<!--       
+    <br/><br/> 
+
+    <div v-for="special in getSpecialMap.keys()" :key="special">
+        <h3>
+              {{special}}: {{ getSpecialMap.get(special).length }}
+        </h3>
+        <table>
+          <tr v-for="meal in getSpecialMap.get(special)" :key="special" class="specialline">
+            <td> {{meal.unit}} </td>
+            <td> {{meal.special}} </td>
+          </tr>
+        </table>
+    </div>
+
+    <br/><br/>   
 
     <div v-for="house in getHouseMap.keys()" :key="house">
         <h3>
